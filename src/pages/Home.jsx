@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
-import { API_BASE_URL } from "../config/api";
+import { API } from "../config/api";
 
 import {
   ShoppingCart,
@@ -131,7 +130,7 @@ export default function JajisHomepage() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`${API_BASE_URL}/`);
+        const response = await API.get('/api/');
         setData(response.data);
       } catch (err) {
         setError(err.message || "Failed to load home page");

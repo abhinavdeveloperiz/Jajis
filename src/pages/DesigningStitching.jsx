@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import {
   Scissors,
   Sparkles,
@@ -15,7 +14,7 @@ import {
   ShoppingBag,
 } from "lucide-react";
 
-import {API_BASE_URL} from "../config/api";
+import { API } from "../config/api";
 
 export default function DesigningStitching() {
   const [data, setData] = useState({ content: "", page: "" });
@@ -26,7 +25,7 @@ export default function DesigningStitching() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`${API_BASE_URL}/designing-stitching/`);
+        const response = await API.get('/api/designing-stitching/');
         setData(response.data);
       } catch (err) {
         console.error("Error fetching designing stitching data:", err);

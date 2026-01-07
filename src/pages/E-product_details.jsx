@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import { API } from "../config/api";
 import { X, Share2, ChevronLeft, ChevronRight } from "lucide-react";
 import { Dialog } from "@headlessui/react";
@@ -24,7 +23,7 @@ export default function ProductDetails() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await axios.get(`${API.defaults.baseURL}/products/${id}/`);
+        const res = await API.get(`/api/products/${id}/`);
         setProduct(res.data);
         setSelectedImageIndex(0);
         if (res.data.variants.length > 0) {

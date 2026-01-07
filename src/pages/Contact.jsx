@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
-import { API_BASE_URL } from "../config/api";
+import { API } from "../config/api";
 import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaClock } from "react-icons/fa";
 import {
   FaFacebookF,
@@ -25,7 +24,7 @@ export default function Contact() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`${API_BASE_URL}/contact/`);
+        const response = await API.get('/api/contact/');
         setData(response.data);
       } catch (err) {
         console.error("Error fetching contact data:", err);

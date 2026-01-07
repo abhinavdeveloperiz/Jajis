@@ -36,7 +36,7 @@ export default function EcommerceHome() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const res = await API.get("/products/");
+        const res = await API.get("/api/products/");
         setProducts(Array.isArray(res.data?.products) ? res.data.products : []);
 
         const categoryNames = Array.isArray(res.data?.categories)
