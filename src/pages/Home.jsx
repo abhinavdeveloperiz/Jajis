@@ -21,6 +21,7 @@ import {
 
 import cosmeticsImg from "../assets/images/cosmatics.png";
 import cosmetics_bg from "../assets/images/cos-bg.jpg";
+import LOGO from "../assets/images/logo.png";
 
 export default function JajisHomepage() {
   const stats = [
@@ -143,23 +144,31 @@ export default function JajisHomepage() {
     fetchData();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-black text-white overflow-hidden">
-        <h1 className="text-4xl md:text-6xl font-extrabold uppercase tracking-[0.3em] text-transparent bg-clip-text bg-gradient-to-r from-gray-500 via-white to-gray-500 animate-shimmer">
-          Jajis Lifestyle
-        </h1>
 
-        <p className="mt-4 text-gray-400 tracking-widest text-sm uppercase animate-pulse">
-          Loading your experience...
-        </p>
 
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute w-96 h-96 bg-gradient-to-br from-pink-500/20 to-purple-500/10 rounded-full blur-3xl top-1/3 left-1/3 animate-pulse"></div>
-        </div>
-      </div>
-    );
-  }
+  
+if (loading) {
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center bg-white px-4">
+      
+      {/* Logo */}
+      <img
+        src={LOGO}
+        alt="Jajis Lifestyle"
+        className="h-24 w-auto mb-6 animate-pulse"
+      />
+
+      {/* Spinner */}
+      <div className="h-7 w-7 border-4 border-gray-200 border-t-gray-900 rounded-full animate-spin" />
+
+      
+
+    </div>
+  );
+}
+
+
+
 
   if (error) {
     return (
