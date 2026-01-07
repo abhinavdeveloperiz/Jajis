@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 import { MapPin } from "lucide-react";
-import { API } from "../config/api";
+import { API_BASE_URL } from "../config/api";
 
 export default function SalonDetails() {
   const { id } = useParams();
@@ -14,7 +15,7 @@ export default function SalonDetails() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await API.get(`/api/salons/${id}/`);
+        const response = await axios.get(`${API_BASE_URL}/salons/${id}/`);
         setData(response.data.data); // Access the data property from response
       } catch (err) {
         console.error("Error fetching salon details:", err);

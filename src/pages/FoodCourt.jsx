@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from "react";
+import axios from "axios";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import {
   Armchair,
@@ -13,7 +14,7 @@ import {
 
 import { FaMapMarkerAlt, FaClock, FaPhoneAlt } from "react-icons/fa";
 
-import { API, API_BASE_URL } from "../config/api";
+import { API_BASE_URL } from "../config/api";
 
 export default function FoodCourt() {
   const [menuData, setMenuData] = useState({ page: "", data: [] });
@@ -68,7 +69,7 @@ export default function FoodCourt() {
     const fetchMenu = async () => {
       try {
         setLoading(true);
-        const res = await API.get('/api/food-court/');
+        const res = await axios.get(`${API_BASE_URL}/food-court/`);
         const raw = res.data || {};
         const items = Array.isArray(raw.data) ? raw.data : [];
 

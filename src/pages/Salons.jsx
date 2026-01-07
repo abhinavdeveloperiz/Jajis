@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
-import { API } from "../config/api";
+import { API_BASE_URL } from "../config/api";
 
 import {
   FaMapMarkerAlt,
@@ -126,7 +127,7 @@ export default function Salons() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await API.get('/api/salons/');
+        const response = await axios.get(`${API_BASE_URL}/salons/`);
         setData(response.data);
       } catch (err) {
         console.error("Error fetching salons data:", err);

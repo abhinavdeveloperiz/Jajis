@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 import {
   FaChalkboardTeacher,
   FaTools,
@@ -10,7 +11,7 @@ import {
   FaMoneyBillWave,
 } from "react-icons/fa";
 
-import { API } from "../config/api";
+import { API_BASE_URL } from "../config/api";
 
 export default function CoursesPage() {
   const [courses, setCourses] = useState([]);
@@ -65,7 +66,7 @@ export default function CoursesPage() {
 
     const fetchCourses = async () => {
       try {
-        const { data } = await API.get('/api/academy/');
+        const { data } = await axios.get(`${API_BASE_URL}/academy/`);
         if (mounted) setCourses(data.data || []);
       } catch (err) {
         console.error("Error fetching courses:", err);

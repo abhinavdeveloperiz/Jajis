@@ -79,7 +79,7 @@ export default function App() {
 
               {/* E-Commerce */}
               <Route path="/products" element={<Product />}/>
-              <Route path="/product/:id" element={<ProtectedRoute><Product_details /></ProtectedRoute>} />
+              <Route path="/product/:id" element={<Product_details />} />
               <Route path="/cart" element={<ProtectedRoute> <Cart /> </ProtectedRoute>}/>
               <Route path="/myorders" element={<ProtectedRoute> <MyOrders/> </ProtectedRoute>} />
               <Route path="/wishlist" element={<ProtectedRoute> <WishList/> </ProtectedRoute> } />

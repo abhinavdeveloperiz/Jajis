@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { API } from "../config/api";
+import axios from "axios";
+import { API_BASE_URL } from "../config/api";
 
 // React Icons
 import {
@@ -31,7 +32,7 @@ export default function EventHall() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await API.get('/api/event-hall/');
+        const response = await axios.get(`${API_BASE_URL}/event-hall/`);
         setData(response.data);
       } catch (err) {
         console.error("Error fetching event hall data:", err);
