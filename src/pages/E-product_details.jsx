@@ -74,10 +74,22 @@ export default function ProductDetails() {
     setAddingItem(false);
   };
 
-  if (loading) return <div className="text-center py-20">Loading...</div>;
-  if (!product) return <div className="text-center py-20 mt-24">Product not found</div>;
-
-  const images = [product.image1, product.image2, product.image3, product.image4].filter(Boolean);
+  if (loading)
+    return (
+      <div className="w-full py-20 mt-24 flex flex-col items-center justify-center gap-4">
+        <div className="h-10 w-10 rounded-full border-4 border-gray-300 border-t-black animate-spin"></div>
+        <span className="text-sm font-medium text-gray-600 tracking-wide">
+          Loading, please wait…
+        </span>
+      </div>
+    );
+ 
+  const images = [
+    product.image1,
+    product.image2,
+    product.image3,
+    product.image4,
+  ].filter(Boolean);
   const selectedImage = images[selectedImageIndex];
 
   // Navigate Lightbox Images
@@ -127,7 +139,9 @@ export default function ProductDetails() {
                 src={img}
                 onClick={() => setSelectedImageIndex(idx)}
                 className={`w-20 h-20 object-cover rounded border-2 cursor-pointer ${
-                  selectedImageIndex === idx ? "border-black" : "border-gray-300"
+                  selectedImageIndex === idx
+                    ? "border-black"
+                    : "border-gray-300"
                 }`}
               />
             ))}
@@ -141,10 +155,19 @@ export default function ProductDetails() {
 
           {selectedVariant && (
             <div className="flex items-center gap-3">
-              <p className="text-3xl font-bold text-green-600">₹{selectedVariant.price}</p>
-              <p className="text-lg text-gray-400 line-through">₹{selectedVariant.mrp}</p>
+              <p className="text-3xl font-bold text-green-600">
+                ₹{selectedVariant.price}
+              </p>
+              <p className="text-lg text-gray-400 line-through">
+                ₹{selectedVariant.mrp}
+              </p>
               <span className="text-sm px-2 py-1 bg-green-100 text-green-700 rounded">
-                {Math.round(((selectedVariant.mrp - selectedVariant.price) / selectedVariant.mrp) * 100)}% OFF
+                {Math.round(
+                  ((selectedVariant.mrp - selectedVariant.price) /
+                    selectedVariant.mrp) *
+                    100
+                )}
+                % OFF
               </span>
             </div>
           )}
@@ -160,7 +183,9 @@ export default function ProductDetails() {
                   key={v.id}
                   onClick={() => setSelectedVariant(v)}
                   className={`px-4 py-2 border rounded-lg text-sm font-medium ${
-                    selectedVariant?.id === v.id ? "bg-black text-white" : "border-gray-400 text-gray-700"
+                    selectedVariant?.id === v.id
+                      ? "bg-black text-white"
+                      : "border-gray-400 text-gray-700"
                   }`}
                 >
                   {v.quantity_label}
@@ -194,7 +219,10 @@ export default function ProductDetails() {
           {/* ADD TO CART + SHARE BUTTON */}
           <div className="flex gap-4">
             {selectedVariant.stock < 1 ? (
-              <button className="px-6 py-3 bg-gray-400 text-white rounded-lg cursor-not-allowed" disabled>
+              <button
+                className="px-6 py-3 bg-gray-400 text-white rounded-lg cursor-not-allowed"
+                disabled
+              >
                 Out of Stock
               </button>
             ) : (
@@ -222,7 +250,11 @@ export default function ProductDetails() {
       <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
         <div className="fixed inset-0 bg-black/90 flex items-center justify-center mt-20">
           <Dialog.Panel className="relative max-w-xl w-full">
-            <img src={selectedImage} alt="lightbox" className="rounded-lg w-full h-auto" />
+            <img
+              src={selectedImage}
+              alt="lightbox"
+              className="rounded-lg w-full h-auto"
+            />
 
             <button
               className="absolute top-4 right-4 bg-white p-2 rounded-full"
@@ -237,14 +269,18 @@ export default function ProductDetails() {
                 <button
                   className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-white/80 p-2 rounded hover:bg-white"
                   onClick={() =>
-                    setSelectedImageIndex((prev) => (prev - 1 + images.length) % images.length)
+                    setSelectedImageIndex(
+                      (prev) => (prev - 1 + images.length) % images.length
+                    )
                   }
                 >
                   <ChevronLeft />
                 </button>
                 <button
                   className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-white/80 p-2 rounded hover:bg-white"
-                  onClick={() => setSelectedImageIndex((prev) => (prev + 1) % images.length)}
+                  onClick={() =>
+                    setSelectedImageIndex((prev) => (prev + 1) % images.length)
+                  }
                 >
                   <ChevronRight />
                 </button>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { API_BASE_URL } from "../config/api";
+import { API } from "../config/api";
 
 import AboutImg from "../assets/images/cosmatics.png";
 
@@ -62,7 +62,7 @@ export default function Cosmetics() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`${API_BASE_URL}/cosmetics/`);
+        const response = await API.get("cosmetics/"); // /api/cosmetics/
         setData(response.data);
       } catch (err) {
         console.error("Error fetching cosmetics data:", err);

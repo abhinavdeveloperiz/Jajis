@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { API_BASE_URL } from "../config/api";
+import { API } from "../config/api";
 
 import {
   ShoppingCart,
@@ -131,7 +131,8 @@ export default function JajisHomepage() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`${API_BASE_URL}/`);
+        // Django home view is mapped to path '' under /api/, so this hits /api/
+        const response = await API.get(""); 
         setData(response.data);
       } catch (err) {
         setError(err.message || "Failed to load home page");
@@ -178,11 +179,13 @@ export default function JajisHomepage() {
     );
   }
 
-  // Resolve banner image URL
+  // Resolve banner image URL (if backend provides one)
   const heroImageRaw = data.video?.image || data.video?.image_url || null;
   const getFullUrl = (u) => {
     if (!u) return null;
-    return u.startsWith("http") ? u : `${API_BASE_URL}${u}`;
+    // If backend sends absolute URL, use it directly. If it's a relative path
+    // like "/media/...", prefix with current origin so it works on both dev and prod.
+    return u.startsWith("http") ? u : `${window.location.origin}${u}`;
   };
   const heroImage = getFullUrl(heroImageRaw);
 

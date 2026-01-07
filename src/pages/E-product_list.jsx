@@ -181,7 +181,14 @@ export default function EcommerceHome() {
   }, [products, selectedCategory, priceRange, searchTerm]);
 
   if (loading)
-    return <div className="text-center py-20">Loading products...</div>;
+    return (
+      <div className="w-full py-20 mt-24 flex flex-col items-center justify-center gap-4">
+        <div className="h-10 w-10 rounded-full border-4 border-gray-300 border-t-black animate-spin"></div>
+        <span className="text-sm font-medium text-gray-600 tracking-wide">
+          Loading, please wait…
+        </span>
+      </div>
+    );
 
   const FilterContent = () => (
     <div className="border p-6 bg-white shadow-sm rounded-lg select-none">

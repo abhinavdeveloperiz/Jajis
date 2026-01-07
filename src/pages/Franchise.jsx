@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { API_BASE_URL } from "../config/api";
+import { API } from "../config/api";
 
 // React Icons
 import {
@@ -29,7 +29,7 @@ export default function Franchise() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`${API_BASE_URL}/franchise/`);
+        const response = await API.get("franchise/"); // /api/franchise/
         setData(response.data);
       } catch (err) {
         console.error("Error fetching franchise data:", err);

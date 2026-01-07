@@ -14,7 +14,7 @@ import {
 
 import { FaMapMarkerAlt, FaClock, FaPhoneAlt } from "react-icons/fa";
 
-import { API_BASE_URL } from "../config/api";
+import { API } from "../config/api";
 
 export default function FoodCourt() {
   const [menuData, setMenuData] = useState({ page: "", data: [] });
@@ -69,13 +69,15 @@ export default function FoodCourt() {
     const fetchMenu = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`${API_BASE_URL}/food-court/`);
+        const res = await API.get("food-court/"); // /api/food-court/
         const raw = res.data || {};
         const items = Array.isArray(raw.data) ? raw.data : [];
 
         const normalized = items.map((item) => {
           let image = item.image || "";
-          if (image.startsWith("/")) image = `${API_BASE_URL}${image}`;
+          // If backend returns relative path like "/media/...",
+          // prefix with current origin so it works in production too.
+          if (image.startsWith("/")) image = `${window.location.origin}${image}`;
           return { ...item, image };
         });
 

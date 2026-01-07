@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import {
   FaStar,
   FaLightbulb,
@@ -14,7 +13,7 @@ import {
   FaGlassCheers,
   FaShoppingBag,
 } from "react-icons/fa";
-import { API_BASE_URL } from "../config/api";
+import { API } from "../config/api";
 
 export default function AboutUs() {
   const [data, setData] = useState({ content: "", page: "" });
@@ -25,10 +24,8 @@ export default function AboutUs() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`${API_BASE_URL}/about-us/`);
-        if (!response.ok) throw new Error("Failed to fetch");
-        const result = await response.json();
-        setData(result);
+        const response = await API.get("about-us/"); // /api/about-us/
+        setData(response.data);
       } catch (err) {
         console.error("Error fetching about us data:", err);
         setError("Failed to load about us page data");
