@@ -2,7 +2,6 @@ import React, { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { API } from "../config/api";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
-import { Range, getTrackBackground } from "react-range";
 
 export default function EcommerceHome() {
   const [categories, setCategories] = useState(["All"]);
@@ -10,7 +9,10 @@ export default function EcommerceHome() {
 
   const MIN = 10;
   const MAX = 5000;
-  const [priceRange, setPriceRange] = useState([MIN, MAX]);
+  const [minPrice, setMinPrice] = useState(null);
+  const [maxPrice, setMaxPrice] = useState(null);
+  const [minInput, setMinInput] = useState('');
+  const [maxInput, setMaxInput] = useState('');
 
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -131,6 +133,13 @@ export default function EcommerceHome() {
     }
   };
 
+  const handleApplyFilter = () => {
+    const min = minInput ? Number(minInput) : null;
+    const max = maxInput ? Number(maxInput) : null;
+    setMinPrice(min);
+    setMaxPrice(max);
+  };
+
   const fuzzyMatch = (text, query) => {
     if (!query) return true;
 
@@ -170,7 +179,7 @@ export default function EcommerceHome() {
         selected === "all" || productCategory === selected;
 
       const matchesPrice =
-        lowestPrice >= priceRange[0] && lowestPrice <= priceRange[1];
+        !minPrice || !maxPrice || (lowestPrice >= minPrice && lowestPrice <= maxPrice);
 
       const title = (p.title || "").toString().toLowerCase();
 
@@ -178,7 +187,7 @@ export default function EcommerceHome() {
 
       return matchesCategory && matchesPrice && matchesSearch;
     });
-  }, [products, selectedCategory, priceRange, searchTerm]);
+  }, [products, selectedCategory, minPrice, maxPrice, searchTerm]);
 
   if (loading)
     return (
@@ -214,49 +223,35 @@ export default function EcommerceHome() {
       <div className="mt-6">
         <h3 className="font-semibold border-b pb-2 mb-4">Price Range</h3>
 
-        <Range
-          values={priceRange}
-          step={10}
-          min={MIN}
-          max={MAX}
-          onChange={setPriceRange}
-          renderTrack={({ props, children }) => (
-            <div
-              {...props}
-              className="react-range__track w-full h-3 rounded-full"
-              style={{
-                background: getTrackBackground({
-                  values: priceRange,
-                  colors: ["#e5e7eb", "#000000", "#e5e7eb"],
-                  min: MIN,
-                  max: MAX,
-                }),
-              }}
-            >
-              {children}
-            </div>
-          )}
-          renderThumb={({ props, index }) => (
-            <div
-              {...props}
-              className="react-range__thumb relative flex items-center justify-center
-                 h-6 w-6 bg-black rounded-full shadow-md"
-            >
-              {/* Bigger invisible touch area */}
-              <div className="absolute h-10 w-10 rounded-full" />
-
-              {/* Value bubble */}
-              <div className="absolute -top-9 bg-black text-white text-xs px-2 py-0.5 rounded">
-                ₹{priceRange[index]}
-              </div>
-            </div>
-          )}
-        />
-
-        <div className="flex justify-between text-sm text-gray-700 mt-3">
-          <span>₹{priceRange[0]}</span>
-          <span>₹{priceRange[1]}</span>
+        <div className="flex gap-2 items-center mb-4">
+          <div className="flex-1">
+            <label className="block text-sm text-gray-600 mb-1">Min Price</label>
+            <input
+              type="number"
+              value={minInput}
+              onChange={(e) => setMinInput(e.target.value)}
+              placeholder="Min"
+              className="w-full border rounded px-3 py-2"
+            />
+          </div>
+          <div className="flex-1">
+            <label className="block text-sm text-gray-600 mb-1">Max Price</label>
+            <input
+              type="number"
+              value={maxInput}
+              onChange={(e) => setMaxInput(e.target.value)}
+              placeholder="Max"
+              className="w-full border rounded px-3 py-2"
+            />
+          </div>
         </div>
+
+        <button
+          onClick={handleApplyFilter}
+          className="w-full bg-black text-white py-2 rounded hover:bg-gray-800"
+        >
+          Apply Filter
+        </button>
       </div>
     </div>
   );

@@ -13,55 +13,8 @@ import {
   FaGlassCheers,
   FaShoppingBag,
 } from "react-icons/fa";
-import { API } from "../config/api";
 
 export default function AboutUs() {
-  const [data, setData] = useState({ content: "", page: "" });
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const response = await API.get("about-us/"); // /api/about-us/
-        setData(response.data);
-      } catch (err) {
-        console.error("Error fetching about us data:", err);
-        setError("Failed to load about us page data");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  // if (loading) {
-  //   return (
-  //     <div className="min-h-screen flex items-center justify-center bg-black">
-  //       <div className="animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-white"></div>
-  //     </div>
-  //   );
-  // }
-
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-black text-white">
-        <div className="text-center">
-          <div className="text-red-500 text-6xl mb-4">⚠️</div>
-          <h2 className="text-2xl font-bold mb-2">Oops!</h2>
-          <p>{error}</p>
-          <button
-            onClick={() => window.location.reload()}
-            className="mt-4 px-6 py-2 bg-white text-black rounded-lg hover:bg-gray-200 transition-colors"
-          >
-            Try Again
-          </button>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-black">
@@ -69,10 +22,7 @@ export default function AboutUs() {
       <div
         className="relative h-[30vh] mt-12 w-full bg-fixed bg-cover bg-center"
         style={{
-          backgroundImage: `url(${
-            data.banner_image ||
-            "https://images.unsplash.com/photo-1562322140-8baeececf3df?auto=format&fit=crop&w=2069&q=80"
-          })`,
+          backgroundImage: `url(https://images.unsplash.com/photo-1562322140-8baeececf3df?auto=format&fit=crop&w=2069&q=80)`,
         }}
       >
         <div className="absolute inset-0 bg-black/60">
@@ -315,7 +265,6 @@ export default function AboutUs() {
       >
         <div className="absolute inset-0 bg-black/60"></div>
         <div className="relative py-32">
-          {/* Section Header */}
           <div className="text-center mb-20">
             <span className="text-sm font-bold tracking-widest text-gray-400 uppercase">
               Meet The Experts
@@ -326,7 +275,6 @@ export default function AboutUs() {
             <div className="w-20 h-1 bg-white mx-auto"></div>
           </div>
 
-          {/* Team Grid */}
           <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
               {

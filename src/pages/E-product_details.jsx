@@ -24,7 +24,7 @@ export default function ProductDetails() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await axios.get(`${API.defaults.baseURL}/products/${id}/`);
+        const res = await API.get(`products/${id}/`);
         setProduct(res.data);
         setSelectedImageIndex(0);
         if (res.data.variants.length > 0) {

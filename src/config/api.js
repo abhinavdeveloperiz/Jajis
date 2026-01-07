@@ -3,7 +3,6 @@ import axios from "axios";
 
 export const API_BASE_URL = "https://jajis.up.railway.app/api/";
 
-// Shared axios instance for all API calls (ecommerce + content pages)
 export const API = axios.create({
   baseURL: API_BASE_URL,
 });

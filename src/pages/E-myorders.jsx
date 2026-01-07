@@ -137,8 +137,11 @@ export default function MyOrdersPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-gray-600">
-        Loading orders...
+      <div className="w-full py-20 mt-24 flex flex-col items-center justify-center gap-4">
+        <div className="h-10 w-10 rounded-full border-4 border-gray-300 border-t-black animate-spin"></div>
+        <span className="text-sm font-medium text-gray-600 tracking-wide">
+          Loading, please wait…
+        </span>
       </div>
     );
   }
