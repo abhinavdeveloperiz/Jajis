@@ -8,7 +8,7 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api': {
-        target: 'https://inspirezesttechnologiesprojectdemo.space/api/',
+        target: 'https://jajis.up.railway.app/api/',
         // target: 'http://localhost:8000/api/',
         changeOrigin: true,
         secure: true,
