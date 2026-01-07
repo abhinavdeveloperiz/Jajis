@@ -3,6 +3,72 @@ import { Link } from "react-router-dom";
 import { API } from "../config/api";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 
+const FilterContent = ({
+  categories,
+  selectedCategory,
+  setSelectedCategory,
+  minInput,
+  setMinInput,
+  maxInput,
+  setMaxInput,
+  handleApplyFilter
+}) => (
+  <div className="border p-6 bg-white shadow-sm rounded-lg select-none">
+    <h2 className="text-xl font-bold mb-6 pb-3 border-b-2">Filters</h2>
+
+    <ul className="space-y-1">
+      {categories.map((cat) => (
+        <li key={cat}>
+          <button
+            onClick={() => setSelectedCategory(cat)}
+            className={`block w-full px-4 py-2 rounded ${
+              selectedCategory === cat
+                ? "bg-black text-white"
+                : "hover:bg-gray-100"
+            }`}
+          >
+            {cat}
+          </button>
+        </li>
+      ))}
+    </ul>
+
+    <div className="mt-6">
+      <h3 className="font-semibold border-b pb-2 mb-4">Price Range</h3>
+
+      <div className="flex gap-2 items-center mb-4">
+        <div className="flex-1">
+          <label className="block text-sm text-gray-600 mb-1">Min Price</label>
+          <input
+            type="number"
+            value={minInput}
+            onChange={(e) => setMinInput(e.target.value)}
+            placeholder="Min"
+            className="w-full border rounded px-3 py-2"
+          />
+        </div>
+        <div className="flex-1">
+          <label className="block text-sm text-gray-600 mb-1">Max Price</label>
+          <input
+            type="number"
+            value={maxInput}
+            onChange={(e) => setMaxInput(e.target.value)}
+            placeholder="Max"
+            className="w-full border rounded px-3 py-2"
+          />
+        </div>
+      </div>
+
+      <button
+        onClick={handleApplyFilter}
+        className="w-full bg-black text-white py-2 rounded hover:bg-gray-800"
+      >
+        Apply Filter
+      </button>
+    </div>
+  </div>
+);
+
 export default function EcommerceHome() {
   const [categories, setCategories] = useState(["All"]);
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -163,7 +229,7 @@ export default function EcommerceHome() {
     const selected = (selectedCategory || "All").toLowerCase();
     const query = (searchTerm || "").trim().toLowerCase();
 
-    return (products || []).filter((p) => {
+    let filtered = (products || []).filter((p) => {
       const variants = Array.isArray(p.variants) ? p.variants : [];
 
       const lowestPrice =
@@ -187,6 +253,19 @@ export default function EcommerceHome() {
 
       return matchesCategory && matchesPrice && matchesSearch;
     });
+
+    // Sort by lowest price ascending (low to high)
+    filtered = filtered.sort((a, b) => {
+      const priceA = a.variants?.length
+        ? Math.min(...a.variants.map((v) => Number(v.price || 0)))
+        : 0;
+      const priceB = b.variants?.length
+        ? Math.min(...b.variants.map((v) => Number(v.price || 0)))
+        : 0;
+      return priceA - priceB;
+    });
+
+    return filtered;
   }, [products, selectedCategory, minPrice, maxPrice, searchTerm]);
 
   if (loading)
@@ -198,63 +277,6 @@ export default function EcommerceHome() {
         </span>
       </div>
     );
-
-  const FilterContent = () => (
-    <div className="border p-6 bg-white shadow-sm rounded-lg select-none">
-      <h2 className="text-xl font-bold mb-6 pb-3 border-b-2">Filters</h2>
-
-      <ul className="space-y-1">
-        {categories.map((cat) => (
-          <li key={cat}>
-            <button
-              onClick={() => setSelectedCategory(cat)}
-              className={`block w-full px-4 py-2 rounded ${
-                selectedCategory === cat
-                  ? "bg-black text-white"
-                  : "hover:bg-gray-100"
-              }`}
-            >
-              {cat}
-            </button>
-          </li>
-        ))}
-      </ul>
-
-      <div className="mt-6">
-        <h3 className="font-semibold border-b pb-2 mb-4">Price Range</h3>
-
-        <div className="flex gap-2 items-center mb-4">
-          <div className="flex-1">
-            <label className="block text-sm text-gray-600 mb-1">Min Price</label>
-            <input
-              type="number"
-              value={minInput}
-              onChange={(e) => setMinInput(e.target.value)}
-              placeholder="Min"
-              className="w-full border rounded px-3 py-2"
-            />
-          </div>
-          <div className="flex-1">
-            <label className="block text-sm text-gray-600 mb-1">Max Price</label>
-            <input
-              type="number"
-              value={maxInput}
-              onChange={(e) => setMaxInput(e.target.value)}
-              placeholder="Max"
-              className="w-full border rounded px-3 py-2"
-            />
-          </div>
-        </div>
-
-        <button
-          onClick={handleApplyFilter}
-          className="w-full bg-black text-white py-2 rounded hover:bg-gray-800"
-        >
-          Apply Filter
-        </button>
-      </div>
-    </div>
-  );
 
   return (
     <div className="bg-gray-50 min-h-screen mt-20 relative">
@@ -292,7 +314,16 @@ export default function EcommerceHome() {
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           <aside className="hidden lg:block lg:col-span-1 sticky top-28">
-            <FilterContent />
+            <FilterContent
+              categories={categories}
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
+              minInput={minInput}
+              setMinInput={setMinInput}
+              maxInput={maxInput}
+              setMaxInput={setMaxInput}
+              handleApplyFilter={handleApplyFilter}
+            />
           </aside>
 
           <div className="lg:col-span-3">
@@ -422,7 +453,16 @@ export default function EcommerceHome() {
             >
               ✕
             </button>
-            <FilterContent />
+            <FilterContent
+              categories={categories}
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
+              minInput={minInput}
+              setMinInput={setMinInput}
+              maxInput={maxInput}
+              setMaxInput={setMaxInput}
+              handleApplyFilter={handleApplyFilter}
+            />
           </div>
         </div>
       )}

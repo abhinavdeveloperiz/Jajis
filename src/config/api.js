@@ -1,8 +1,8 @@
 import axios from "axios";
 
 
-export const API_BASE_URL = "https://jajis.up.railway.app/api/";
-
+// export const API_BASE_URL = "https://jajis.up.railway.app/api/";
+export const API_BASE_URL = "http://localhost:8000/api/";
 export const API = axios.create({
   baseURL: API_BASE_URL,
 });
